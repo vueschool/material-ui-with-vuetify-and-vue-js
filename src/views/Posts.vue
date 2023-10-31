@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { VDataTable } from "vuetify/labs/VDataTable";
 const posts = ref([
   { title: "Post 1", author: "Fred" },
   { title: "Post 2", author: "Wilma" },
@@ -14,23 +15,36 @@ const posts = ref([
   { title: "Post 11", author: "Barney" },
   { title: "Post 12", author: "Bam-Bam" },
 ]);
+
+const selected = ref([]);
+const search = ref("");
 </script>
 <template>
   <div>
     <h1>Posts</h1>
-    <v-table :height="300" :fixed-header="true" :hover="true">
-      <thead>
-        <tr>
-          <th class="text-left">Name</th>
-          <th class="text-left">Author</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in posts" :key="item.title">
-          <td>{{ item.title }}</td>
-          <td>{{ item.author }}</td>
-        </tr>
-      </tbody>
-    </v-table>
+    <v-text-field
+      v-model="search"
+      append-icon="mdi-magnify"
+      label="Search"
+      single-line
+      hide-details
+    ></v-text-field>
+
+    <v-data-table
+      :headers="[
+        {
+          title: 'Post Title',
+          align: 'start',
+          sortable: false,
+          key: 'title',
+        },
+        { title: 'Author', align: 'end', key: 'author' },
+      ]"
+      :items="posts"
+      show-select
+      item-value="title"
+      v-model="selected"
+      :search="search"
+    ></v-data-table>
   </div>
 </template>
