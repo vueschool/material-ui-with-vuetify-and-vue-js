@@ -51,11 +51,10 @@ const drawer = ref(false);
       </v-list>
     </v-navigation-drawer>
 
-    <v-main
-      class="d-flex align-center justify-center"
-      style="min-height: 300px"
-    >
-      <router-view></router-view>
+    <v-main style="min-height: 300px">
+      <div class="pa-5">
+        <router-view></router-view>
+      </div>
     </v-main>
   </v-layout>
 </template>
