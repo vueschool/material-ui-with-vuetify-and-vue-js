@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { VDataTable } from "vuetify/labs/VDataTable";
 import PostForm from "@/components/PostForm.vue";
+import { refAutoReset } from "@vueuse/core";
 const posts = ref([
   { title: "Post 1", author: "Fred" },
   { title: "Post 2", author: "Wilma" },
@@ -20,9 +21,26 @@ const posts = ref([
 const selected = ref([]);
 const search = ref("");
 const postForm = ref();
+
+const postSaved = refAutoReset(false, 4000);
 </script>
 <template>
   <div>
+    <v-alert
+      variant="tonal"
+      type="success"
+      closable
+      title="Post Updated"
+      v-model="postSaved"
+    />
+
+    <!-- <v-snackbar v-model="postSaved" :timeout="4000">
+      <div class="d-flex align-center">
+        <v-icon icon="mdi-check-circle" class="text-green pr-3"></v-icon>
+        Post Saved!
+      </div>
+    </v-snackbar> -->
+
     <h1>Posts</h1>
     <v-text-field
       v-model="search"
@@ -60,7 +78,10 @@ const postForm = ref();
                 <PostForm
                   ref="postForm"
                   :post="item"
-                  @submit="isActive.value = false"
+                  @submit="
+                    isActive.value = false;
+                    postSaved = true;
+                  "
                 />
               </v-card-text>
               <v-card-actions>
